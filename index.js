@@ -175,18 +175,46 @@ const dynamodb = new AWS.DynamoDB.DocumentClient();
 //     else console.log(data);
 // });
 
-//Find projects from Stan Libuda
-const Stan = "f0f6cd5a-2ff7-4607-9d58-7340753f29d3";
+// //Find projects from Stan Libuda
+// const Stan = "f0f6cd5a-2ff7-4607-9d58-7340753f29d3";
+// const happyIncOrgId = "dde19ac4-5cdc-46c0-808c-9b1a29391e75";
+
+// var params={
+//     TableName: "happy-projects",
+//     IndexName: "Project-Employee-Index",
+//     KeyConditionExpression: "SK = :SK",
+//     ExpressionAttributeValues: {
+//         ":SK": `ORG#${happyIncOrgId}#EMP#${Stan}`
+//     }
+// }
+// dynamodb.query(params, function(err, data) {
+//     if (err) console.log(err);
+//     else console.log(data);
+// });
+
+//Find by name (Employee or Project)
 const happyIncOrgId = "dde19ac4-5cdc-46c0-808c-9b1a29391e75";
+const ABCIncOrgId = "bfd5497d-8b41-47ad-89c2-95bdef56a0b4";
+
+const Stan = "f0f6cd5a-2ff7-4607-9d58-7340753f29d3";
+const Ernst = "cff55748-56eb-4b56-ad42-638fea856ed1";
+const Klaus = "c2b27324-5a68-41b4-83ff-44973621bd99";
+
+const projectA = "b3bea36b-f03e-42a5-bf69-1603281b5876";
+const projectB = "a5c3d0fc-3ca7-4c8d-aa07-1759152eaa0d";
+const projectX = "7360bd6e-6239-4e48-96e3-1a7e828ebedc";
+const projectY = "a6c75a1f-ebdc-4302-914f-ffc0691fd901";
 
 var params={
     TableName: "happy-projects",
-    IndexName: "Project-Employee-Index",
-    KeyConditionExpression: "SK = :SK",
+    IndexName: "Filter-by-name",
+    KeyConditionExpression: "#PK = :PK and begins_with(#SK, :SK)",
+    ExpressionAttributeNames: { '#PK': 'PK', '#SK': 'Data' },
     ExpressionAttributeValues: {
-        ":SK": `ORG#${happyIncOrgId}#EMP#${Stan}`
+        ":PK": `ORG#${ABCIncOrgId}`,
+        ":SK": 'PRO#Project'
     }
-}
+};
 dynamodb.query(params, function(err, data) {
     if (err) console.log(err);
     else console.log(data);
